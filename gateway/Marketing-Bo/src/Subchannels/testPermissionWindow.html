@@ -1,0 +1,39 @@
+<div>
+	<div class="overlay"></div>
+	<div class="popup">
+
+		<table class="table table-no-margin">
+			<thead>
+			<tr>
+				<th class="table-title" colspan="2">{{permission.name}}<button class="xbutton" ng-click="PermCtrl.closePopup()" ng-if="true"><span class="glyphicon glyphicon-remove"></span></button></th>
+			</tr>
+
+			</thead>
+			<tr ng-repeat="param in PermCtrl.allParams" ng-if="param.isDisplay">
+				<td>{{param.title}}</td>
+				<td>
+					<input ng-if="param.type != 'select'" type="{{param.type}}" class="form-control" value="{{param.value}}" min="{{param.min ? param.min : null}}" max="{{param.max ? param.max : null}}" ng-model="param.value" ng-change="PermCtrl.parsePermissionUrl()">
+					<select ng-if="param.type == 'select'" class="form-control" ng-model="param.value" ng-change="PermCtrl.parsePermissionUrl()">
+						<option ng-repeat="option in param.options">{{option}}</option>
+					</select>
+				</td>
+			</tr>
+
+			<tfoot>
+			<tr>
+				<td colspan="2"><button class="btn btn-default" ng-click="PermCtrl.validateFields()"><span class="glyphicon glyphicon-send" style="vertical-align:middle"></span> Send</button></td>
+			</tr>
+			<tr>
+				<td colspan="2"><strong>Request:</strong><br>
+					<textarea class="response-cell" ng-readonly="1" rows="3" cols="50" wrap="on" readonly="readonly">{{PermCtrl.testURL}}</textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2"><strong>Response:</strong><br>
+					<textarea class="response-cell" ng-readonly="1" rows="8" cols="50" wrap="off" readonly="readonly">{{PermCtrl.response}}</textarea>
+				</td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+

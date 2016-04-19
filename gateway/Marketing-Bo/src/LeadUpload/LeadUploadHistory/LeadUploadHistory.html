@@ -1,0 +1,33 @@
+<div class="container">
+	<h3>Upload Leads - History</h3> <button class="btn btn-default" ng-click="HistoryCtrl.getAllFilesList()"><span class="glyphicon glyphicon-refresh" style="vertical-align:middle"></span> Refresh List</button>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>File ID</th>
+			<th>File Name</th>
+			<th>Language</th>
+			<th>Partner</th>
+			<th>User Group ID</th>
+			<th>Affiliate ID</th>
+			<th>Strategy</th>
+			<th>Lead Type</th>
+			<th>Uploaded Date</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="file in HistoryCtrl.allFiles | orderBy : '-timestamp'">
+			<td>{{file.fileId}}</td>
+			<td>{{file.fileName}}</td>
+			<td>{{file.lang | uppercase}}</td>
+			<td>{{file.site}}</td>
+			<td>{{file.ugid}}</td>
+			<td>{{file.affid}}</td>
+			<td>{{file.strategy}}</td>
+			<td>{{file.isUser ? 'User' : 'Lead'}}</td>
+			<td>{{file.timestamp | date:'dd/MM/yyyy HH:mm'}}</td>
+			<td><button class="btn btn-default" ng-click="HistoryCtrl.getLeadsByFileID(file)"><span class="glyphicon glyphicon-cloud-download" style="vertical-align:middle"></span> Leads</button></td>
+		</tr>
+		</tbody>
+	</table>
+</div>

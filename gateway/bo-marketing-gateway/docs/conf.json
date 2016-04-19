@@ -1,0 +1,13 @@
+{
+	"opts": {
+		"private": false,
+		"recurse": true,
+		"lenient": false,
+		"encoding": "utf8"
+	},
+	"templates": {
+		"default": {
+			"outputSourceFiles": false
+		}
+	}
+}

@@ -1,0 +1,8 @@
+{
+	"apiHost": {
+		"hostsData" : {
+			// Holds default api host key
+			"defaultHostname": "api-marketing.ubinary.com"
+		}
+	}
+}

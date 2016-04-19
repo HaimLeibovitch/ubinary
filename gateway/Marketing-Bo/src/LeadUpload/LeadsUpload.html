@@ -1,0 +1,80 @@
+<div class="container">
+    <h3>Upload Leads</h3>
+    <form name="form" id="upload-leads-form">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Get Sample Files:</label>
+            <a href="file/assets/SampleLeadUploadFiles/leads.xlsx" style="margin-right: 50px;">Leads</a>
+            <a href="file/assets/SampleLeadUploadFiles/users.xlsx">Users</a>
+        </div>
+        <div class="form-group">
+            <label for="partnersSelect" class="col-sm-2 control-label">Partner:</label>
+            <select id="partnersSelect" class="form-control"
+                    ng-change="LeadUploadCtrl.updateSelectedPartner(LeadUploadCtrl.selectedPartner)"
+                    ng-options="partner.partner_name for partner in LeadUploadCtrl.partners track by partner.partner_id"
+                    ng-model="LeadUploadCtrl.selectedPartner"></select>
+        </div>
+        <div class="form-group">
+            <label for="buSelect" class="col-sm-2 control-label">Business Unit:</label>
+            <select id="buSelect" class="form-control"
+                    ng-change="LeadUploadCtrl.updateSelectedBU(LeadUploadCtrl.selectedBu)"
+                    ng-options="bu.bu_name for bu in LeadUploadCtrl.selectedPartner.businessUnits track by bu.bu_id"
+                    ng-model="LeadUploadCtrl.selectedBu"></select>
+        </div>
+        <div class="form-group">
+            <label for="ugSelect" class="col-sm-2 control-label">User Group:</label>
+            <select id="ugSelect" class="form-control"
+                    ng-options="ug.ug_name for ug in LeadUploadCtrl.selectedBu.userGroups track by ug.ug_id"
+                    ng-model="LeadUploadCtrl.selectedUg"></select>
+        </div>
+        <div class="form-group">
+            <label for="langSelect" class="col-sm-2 control-label">Language:</label>
+            <select id="langSelect" class="form-control"
+                    ng-options="lang.name for lang in LeadUploadCtrl.languages track by lang.code"
+                    ng-model="LeadUploadCtrl.leadsData.lang"></select>
+        </div>
+        <div class="form-group">
+            <label for="affID" class="col-sm-2 control-label">Affiliate ID:</label>
+            <input id="affID" class="form-control" required
+                   ng-model="LeadUploadCtrl.leadsData.affID"/>
+        </div>
+        <div class="form-group">
+            <label for="tlid" class="col-sm-2 control-label">TLID:</label>
+            <input id="tlid" class="form-control"
+                   ng-model="LeadUploadCtrl.leadsData.tlid"/>
+        </div>
+        <div class="form-group">
+            <label for="cTag" class="col-sm-2 control-label">cTag (adServer):</label>
+            <input id="cTag" class="form-control"
+                   ng-model="LeadUploadCtrl.leadsData.cTag"/>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-link" ng-click="LeadUploadCtrl.openHowTo()">How To Find TLID and
+                cTag?
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="adData" class="col-sm-2 control-label">AdData (strategy):</label>
+            <input id="adData" class="form-control"
+                   ng-model="LeadUploadCtrl.leadsData.adData"/>
+        </div>
+        <div class="form-group">
+            <label for="fileSelect" class="col-sm-2 control-label">Select File:</label>
+            <input type="file" id="fileSelect" class="form-control" required
+                   onchange="angular.element(this).scope().fileSelected(event)" accept=".txt"/>
+        </div>
+        <div class="form-group">
+            <label class="radio-inline">
+                <input type="radio" value="lead" ng-model="LeadUploadCtrl.leadsData.uploadAs"> Upload as leads
+            </label>
+            <label class="radio-inline">
+                <input type="radio" value="user" ng-model="LeadUploadCtrl.leadsData.uploadAs"> Upload as users
+                (passwords required)
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default submit-btn btn-small"  ng-click="LeadUploadCtrl.parseFile()">
+            Submit
+        </button>
+    </form>
+    <upload-file></upload-file>
+    <alert-message></alert-message>
+</div>

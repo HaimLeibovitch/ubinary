@@ -1,0 +1,90 @@
+{
+  "reportsPkg": {
+    "id": 10001,
+    "name": "Reports",
+    "isAllowed": false,
+    "children": {
+      "accounts": {
+        "id": 10002,
+        "name": "Users (leads) report",
+        "isAllowed": false
+      },
+      "transactions": {
+        "id": 10003,
+        "name": "Transactions report",
+        "isAllowed": false
+      }
+    }
+  },
+  "registrationPkg": {
+    "id": 10004,
+    "name": "Registration",
+    "isAllowed": false,
+    "children": {
+      "registerLead": {
+        "id": 10005,
+        "name": "Register lead",
+        "isAllowed": false
+      },
+      "registerUser": {
+        "id": 10006,
+        "name": "Register user",
+        "isAllowed": false
+      },
+      "isEmailExists": {
+        "id": 10007,
+        "name": "e-mail validation",
+        "isAllowed": false
+      }
+    }
+  },
+  "usersPkg": {
+    "id": 10008,
+    "name": "Users",
+    "isAllowed": false,
+    "children": {
+      "userLogin": {
+        "id": 10009,
+        "name": "User login",
+        "isAllowed": false
+      },
+      "userBalance": {
+        "id": 10010,
+        "name": "Get user's balance",
+        "isAllowed": false
+      },
+      "userOpenPositions": {
+        "id": 10011,
+        "name": "Get user's open positions",
+        "isAllowed": false
+      },
+      "userClosedPositions": {
+        "id": 10012,
+        "name": "Get user's closed positions",
+        "isAllowed": false
+      }
+    }
+  },
+  "tradingPkg": {
+    "id": 10013,
+    "name": "Trading",
+    "isAllowed": false,
+    "children": {
+      "affiliateLogin": {
+        "id": 10014,
+        "name": "Affiliate login",
+        "isAllowed": false
+      },
+      "tradingDeals": {
+        "id": 10015,
+        "name": "Get trading options",
+        "isAllowed": false
+      },
+      "userOpenPosition": {
+        "id": 10016,
+        "name": "Open position for user",
+        "isAllowed": false
+      }
+    }
+  }
+}

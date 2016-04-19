@@ -1,0 +1,5 @@
+<li>
+	<input type='checkbox'  ng-model='member.isAllowed' ng-disabled='(!!parent && !parent.isAllowed) || parent.disabled' ng-change='checkedChanged(member)'>
+	{{member.name}}
+	<button class="btn btn-link test-link" ng-if='member.url' ng-disabled="!member.isAllowed" ng-click="openTestWindow()">Test</button>
+</li>

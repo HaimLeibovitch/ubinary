@@ -1,0 +1,58 @@
+<div class="container" >
+	<h3>Subchannels</h3>
+	<form class="form-inline">
+		<div class="form-group">
+			<label for="searchBox" class="control-label">Search:</label>
+			<input id="searchBox" type="text" ng-model="search" class="form-control" placeholder="Search">
+		</div>
+		<div class="form-group">
+			<label for="inputAffManager" class="control-label">Affiliate Manager:</label>
+			<select id="inputAffManager" ng-model="selectedManager" class="form-control">
+				<option value="">-- All --</option>
+				<option ng-repeat="manager in SubchannelsCtrl.allManagers" value="{{manager}}">{{manager}}</option>
+			</select>
+		</div>
+	</form>
+	<table id="scTable" class="table table-striped table-bordered">
+		<thead>
+		<tr>
+			<th>Subchannel ID</th>
+			<th>User Name</th>
+			<th>Manager</th>
+			<th>Options</th>
+		</tr>
+		</thead>
+		<tbody dir-paginate="sc in SubchannelsCtrl.allSubchannels | filter:{AffiliateManager : selectedManager} | filter:search | itemsPerPage:10" data-ng-switch on="SubchannelsCtrl.scDataCollapse[$index]">
+		<tr>
+			<td>{{sc.id}}</td>
+			<td>{{sc.UserName}}</td>
+			<td>{{sc.AffiliateManager}}</td>
+			<td>
+				<button class="btn btn-default" ng-click="SubchannelsCtrl.selectSubchannel($index, sc, 'contact')"><span class="glyphicon glyphicon-user" style="vertical-align:middle"></span> Contact Info</button>
+				<button class="btn btn-default" ng-click="SubchannelsCtrl.selectSubchannel($index, sc, 'payments')"><span class="glyphicon glyphicon-briefcase" style="vertical-align:middle"></span> Payments</button>
+				<button class="btn btn-default" ng-click="SubchannelsCtrl.selectSubchannel($index, sc, 'permissions')"><span class="glyphicon glyphicon-lock" style="vertical-align:middle"></span> Permissions</button>
+				<button class="btn btn-default" ng-click="SubchannelsCtrl.selectSubchannel($index, sc, 'config')"><span class="glyphicon glyphicon-cog" style="vertical-align:middle"></span> Config</button>
+				<button class="xbutton" ng-click="SubchannelsCtrl.selectSubchannel($index, sc, '')" ng-if="sc.moreInfo!=''"><span class="glyphicon glyphicon-remove"></span></button>
+			</td>
+		</tr>
+		<tr data-ng-switch-when="true">
+			<td colspan="4">
+				<div class="span4">
+					<sc-contact ng-if="sc.moreInfo=='contact'"></sc-contact>
+					<sc-payments ng-if="sc.moreInfo=='payments'"></sc-payments>
+					<sc-permissions ng-if="sc.moreInfo=='permissions'"></sc-permissions>
+					<sc-config ng-if="sc.moreInfo=='config'"></sc-config>
+				</div>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<dir-pagination-controls
+			max-size="20"
+			direction-links="true"
+			boundary-links="false"
+			on-page-change="SubchannelsCtrl.pageChanged()"
+			before-page-change="SubchannelsCtrl.beforePageChange()">
+	</dir-pagination-controls>
+
+</div>

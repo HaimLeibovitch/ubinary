@@ -1,0 +1,218 @@
+{
+    "apiHost": {
+        "idLength": 10,
+        "maxWorkerRestarts": 10,
+        "maxWorkerRestartWait": 10,
+        "resetWorkerRestartsAfterActiveFor": 300,
+        "shutdownLingerTime": 30000,
+        "instances": {
+            "gwapi_process": {
+                "forks": 1,
+                "cluster": false,
+                "require": [
+                    "d:\\ubinary\\gateway\\bo-marketing-gateway\\node_modules\\open-api-gateway-core/services/service-broker.js",
+                    "d:\\ubinary\\gateway\\bo-marketing-gateway\\node_modules\\open-api-gateway-core/frontend/frontend.js"
+                ]
+            }
+        },
+        "hostsData": {
+            "defaultHostname": "api-marketing.ubinary.com"
+        }
+    },
+    "common": {
+        "logger": {
+            "matcher": "glob",
+            "defaults": {
+                "enabled": true,
+                "provider": "console",
+                "formatter": "json",
+                "level": "warn",
+                "maxLength": 2000,
+                "overflow": "---"
+            },
+            "contexts": []
+        },
+        "messageBus": {
+            "provider": "inproc",
+            "providerConfig": {
+                "host": "b2c-redis",
+                "port": 6379,
+                "db": 0
+            }
+        },
+        "geoIP": {
+            "logging": false,
+            "dataFile": "/etc/GeoIP.dat",
+            "useCache": false
+        },
+        "metrics": {
+            "provider": "statsd",
+            "providerConfig": {
+                "enabled": false,
+                "host": "b2c-statsd",
+                "port": 8125,
+                "prefix": "gwapi",
+                "gaugesInterval": 8000
+            }
+        },
+        "esb": {
+            "logger": true,
+            "services": {},
+            "subscriptionsConfig": {
+                "enabled": false,
+                "zooKeeperHost": "esb-zookeeper",
+                "zooKeeperPort": 2181
+            },
+            "rpcConfig": {
+                "enabled": true,
+                "timeout": 30000
+            }
+        }
+    },
+    "frontend": {
+        "listeners": [
+            {
+                "server": {
+                    "provider": "http",
+                    "config": {
+                        "port": [
+                            10100,
+                            10110
+                        ],
+                        "keepAliveTimeout": 30000
+                    }
+                },
+                "protocol": "HTTP-JSON"
+            },
+            {
+                "server": {
+                    "provider": "socket.io",
+                    "config": {
+                        "port": [
+                            10200,
+                            10210
+                        ],
+                        "redis": {
+                            "enabled": false,
+                            "host": "b2c-redis",
+                            "port": 6379,
+                            "db": 1
+                        }
+                    }
+                },
+                "protocol": "JSON"
+            },
+            {
+                "server": {
+                    "provider": "ws",
+                    "config": {
+                        "port": [
+                            10400,
+                            10410
+                        ]
+                    }
+                },
+                "protocol": "JSON"
+            },
+            {
+                "server": {
+                    "provider": "polling",
+                    "config": {
+                        "port": [
+                            10500,
+                            10510
+                        ]
+                    }
+                },
+                "protocol": "JSON"
+            }
+        ],
+        "session": {
+            "provider": "redis",
+            "providerConfig": {
+                "db": 2,
+                "prefix": "SESSION_MANAGER:"
+            },
+            "ttl": 120000,
+            "idLength": 16
+        },
+        "connectionManager": {
+            "activityTimeout": 600000
+        },
+        "response": {
+            "filterSystemErrors": true
+        },
+        "clientContext": "",
+        "tokenProvider": "",
+        "filters": [],
+        "handlers": []
+    },
+    "services": {
+        "serviceBroker": [
+            {
+                "registerOnESB": false,
+                "services": [
+                    "d:\\ubinary\\gateway\\bo-marketing-gateway\\node_modules\\open-api-gateway-core/services/lib/*.js",
+                    "d:\\ubinary\\gateway\\bo-marketing-gateway/services/lib/*.js"
+                ]
+            }
+        ],
+        "pollTradingData": true,
+        "pollInterval": 1000
+    },
+    "dataAccess": {
+        "rpc": {
+            "http": {
+                "maxPoolSockets": 20
+            },
+            "smtp": {
+                "host": "smtp-server",
+                "port": 25,
+                "timeout": 20000
+            }
+        },
+        "cache": {
+            "provider": "redis",
+            "providerConfig": {
+                "prefix": "CM:"
+            }
+        },
+        "storage": {
+            "oracle": {
+                "logging": false,
+                "name": "default",
+                "provider": "oracle-driver",
+                "providerConfig": {
+                    "connectData": {
+                        "hostname": "oracle-srv",
+                        "user": "paragonex",
+                        "password": "paragonex",
+                        "database": "PROD"
+                    },
+                    "schemaName": "PARAGONEX"
+                }
+            },
+            "couch": {
+                "logging": true,
+                "providerConfig": {
+                    "host": "couch-srv",
+                    "port": 8091,
+                    "bucket": "subchannels"
+                }
+            },
+            "mongo": {
+                "logging": false,
+                "providerConfig": {
+                    "host": "mongodb://paragonex:paragonex@mongo-srv:27017"
+                }
+            },
+            "redis": {
+                "host": "b2c-redis",
+                "port": 6379,
+                "db": 0,
+                "prefix": ""
+            }
+        }
+    },
+    "dataProviders": {}
+}

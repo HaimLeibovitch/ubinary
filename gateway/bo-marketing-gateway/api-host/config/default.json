@@ -1,0 +1,160 @@
+{
+	"apiHost": {
+		// The maximum times the server will restart a worker before giving up.
+		"maxWorkerRestarts": 10,
+
+		// The maximum wait time IN SECONDS between worker restarts.
+		"maxWorkerRestartWait": 10,
+
+		// The time, IN SECONDS, after which the restarts attempts will be reset in case the worker was active.
+		// In other words, if the worker was active (no restarts) for X seconds the restart attempts will be reset to 0.
+		"resetWorkerRestartsAfterActiveFor": 300,
+		/*
+		 * instances is a dictionary of processes to fork.
+		 * Keys   - Are strings used as the process title for all the forks of the described instance.
+		 * Values - Are objects with instructions for forking the instance.
+		 * 		    require - A list of modules to require in this instance, the path is RELATIVE TO THE api-host/server.js location (or absolute).
+		 *          cluster - Whether the fork should be done using the cluster module (with port sharing) or child_process (no port sharing)
+		 *          forks   - The number of instances to create (fork), each fork would be spawned as a child_process.
+		 *                    In case of "PerCPU" the instances would be created according to the number of CPUs on the machine.
+		 *
+		 * Notes:
+		 * There will always be a master process.
+		 * The master process does not require any applicative components - It only handles forking/killing workers.
+		 * Yes, if no forks are configured for no instance, the master process will still run and listen for configuration changes.
+		 */
+		"instances": {
+			"gwapi_process": {
+				"forks": "{{process.env.NODE_ENV === 'dev' ? 1 : (process.env.NODE_ENV === 'production' ? 4 : 'PerCPU')}}",
+				"cluster": false,
+				"require": ["%CORE_DIR%/services/service-broker.js", "%CORE_DIR%/frontend/frontend.js"]
+			}
+		}
+	},
+	"common": {
+		"logger": {
+			"matcher": "glob",
+			"defaults": {
+				"enabled": true,
+				"provider": "console",
+				"formatter": "json",
+				"level": "warn",
+				"maxLength": 2000,
+				"overflow": "---"
+			},
+			"contexts": []
+		},
+		"messageBus": {
+			"provider": "inproc",
+			"providerConfig": {"host": "b2c-redis", "port": 6379, "db": 0 }
+		},
+		"geoIP": {
+			"logging": false,
+			// GeoIP file is from MaxMind GeoLiteCountry database
+			// http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+			"dataFile": "/etc/GeoIP.dat",
+			"useCache": false
+		},
+		"metrics": {
+			"provider": "statsd",
+			"providerConfig": { "host": "b2c-statsd", "port": 8125, "prefix": "gwapi", "enabled": false }
+		},
+		"esb": {
+			"logger": true,
+			"subscriptionsConfig": { "enabled": false, "zooKeeperHost": "esb-zookeeper", "zooKeeperPort": 2181 },
+			"rpcConfig": { "enabled": true, "timeout": 30000 },
+			// A dictionary of predefined services to load, where the key is the endpoint address, and value is object with "enabled" and "qualifiers"
+			// {'qa-pltfrmsrv01:5557': { enabled: true, qualifiers: ['/platform/auth/login', '/platform/auth/logout']} }
+			"services": {
+			}
+		}
+	},
+	"frontend": {
+		"listeners":
+		[
+			// In the listener config port can be either a single number or an array with 2 numbers which specify the range
+			// of ports (inclusive) to try to use (will start from the first until it succeeds to bind to the port or reach the end and error)
+			{
+				"server": {
+					"provider": "http",
+					"config": { "port": [10100, 10110], "keepAliveTimeout": "{{process.env.NODE_ENV === 'production' ? 10000 : 30000 }}" }
+				},
+				"protocol": "HTTP-JSON"
+			},
+			{
+				"server": {
+					// if redis config is empty object then defaults will be used, if there's no redis object
+					// at all then socket.io would manage sessions in-memory.
+					"provider": "socket.io",
+					"config": { "port": [10200, 10210], "redis": { "enabled": false, "host": "b2c-redis", "port": 6379, "db": 1 } }
+				},
+				"protocol": "JSON"
+			},
+			{
+				"server": {
+					"provider": "ws",
+					"config": { "port": [10400, 10410] }
+				},
+				"protocol": "JSON"
+			},
+			{
+				"server": {
+					"provider": "polling",
+					"config": { "port": [10500, 10510] }
+				},
+				"protocol": "JSON"
+			}
+		],
+		"session": {
+			"provider": "redis",
+			"providerConfig": { "db": 2, "prefix": "SESSION_MANAGER:" },
+			"ttl" : 120000, // milliseconds
+			"idLength": 16
+		},
+		"connectionManager": {
+			"activityTimeout": 600000
+		},
+
+		// A list of glob patterns of filters to load. The path in the glob should be absolute or relative to the process' working dir
+		// NOTE: ORDER IS IMPORTANT
+		"filters": [
+		],
+		// A list of custom handlers to register, each entry should be an object with "name" and "path" to the
+		// handler object, the path should be relative to the forntend/handlers/request/router.js file (or absolute path).
+		// {"name": "SomeCustomHandler", "path": "/var/www/b2c-platform/trading-platform-gateway/handlers/user-handler.js"}
+		"handlers": [
+	    ]
+	},
+	"services": {
+		// Whether GetAppData should be with polling or push notifications
+		"pollTradingData": true,
+		"pollInterval": 1000,
+		// A list of settings objects.
+		"serviceBroker": [
+			{
+				// Whether or not expose the services on the ESB.
+				"registerOnESB": false,
+				// A list of services to load, path should be RELATIVE to service-broker.js location (or absolute).
+				// If the path is a directory then all the files in that dir will be loaded as services.
+				"services": [
+					"%CORE_DIR%/services/lib/*.js",
+					"%BASE_DIR%/services/lib/*.js"
+				]
+			}
+		]
+	},
+	"dataProviders": {
+	},
+  "dataAccess": {
+	"storage": {
+	  "couch": {
+		"logging": true,
+		"providerConfig": {
+		  "host": "couch-srv",
+		  "port": 8091,
+		  "bucket": "subchannels"
+		}
+	  }
+	}
+  }
+}

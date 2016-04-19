@@ -1,0 +1,311 @@
+/**
+ * Holds types and functionality relevant to account entity
+ * @namespace Account
+ */
+
+//<editor-fold desc="// Model {...}">
+
+/**
+ * Represent a Account status info object
+ * @typedef Account.AccountStatusInfo
+ * @property {Account.AccountStatus} accountInfo - The account info
+ * @property {Array.<Account.Bonus>} bonuses - The account bonuses
+*/
+
+/**
+ * Represent a Account status object
+ * @typedef Account.AccountStatus
+ * @property {number} balance - The account balance
+ * @property {number} cashback - The user's available cashback
+ * @property {number} freeMargin - The account free margin
+ * @property {number} usedMargin - The account used margin
+ * @property {number} equityLevel - The account equity level
+ * @property {boolean} isCloseToTradeout - Is account flagged as close to trade-out
+ * @property {number} openPNL - The account open profit & loss
+ * @property {number} equity - The account equity
+ * @property {number} pendingWithdrawalAmount - Total amount of pending withdrawals requested
+*/
+
+/**
+ * Represent a Position history object
+ * @typedef Account.Position
+ * @property {string} id - The position id
+ * @property {string} symbol - The position symbol
+ * @property {string} assetName - The asset name this position was on
+ * @property {Trading.OrderSide} side - The position side
+ * @property {string} openTimestamp - The position open date/time
+ * @property {string} price - In case of market the position the execution price. In case of limit order the limit price
+ * @property {number} buyQuantity - The number of shares that has been bought (or pending for execution)
+ * @property {string} buyAsset - The asset symbol that has been bought (or pending for execution)
+ * @property {number} sellQuantity - The number of shares that has been sold (or pending for execution)
+ * @property {string} sellAsset - The asset symbol that has been sold (or pending for execution)
+ * @property {string} closeTimestamp - The position close date/time (for closed positions)
+ * @property {string} closePrice - The close price of the position (for closed positions)
+ * @property {number} pnl - The position profit/loss
+ * @property {number} commission - The commission charged for this position
+ */
+
+/**
+ * Represent a account history order object
+ * @typedef Account.Order
+ * @property {string} id - The order id
+ * @property {string} symbol - The order symbol
+ * @property {string} assetName - The asset name this order was on
+ * @property {Trading.OrderSide} side - The order side
+ * @property {string} rate - Assets exchange rate that the order was open upon
+ * @property {string} openTimestamp - The order open date/time
+ * @property {number} buyQuantity - The number of shares that has been bought (or pending for execution)
+ * @property {string} buyAsset - The asset symbol that has been bought (or pending for execution)
+ * @property {number} sellQuantity - The number of shares that has been sold (or pending for execution)
+ * @property {string} sellAsset - The asset symbol that has been sold (or pending for execution)
+ * @property {string} closeTimestamp - The order close date/time (for closed positions)
+ * @property {Trading.CloseReason} closeReason - The order closing reason
+ * @property {Trading.OrderExecutionStatus} execStatusId - The order execution status
+ */
+
+/**
+ * An account summary info
+ * @typedef Account.AccountSummary
+ * @property {number} beginningBalance - Account's begin balance amount
+ * @property {number} endingBalance - Account's end balance amount
+ * @property {number} usedMargin - Account's used margin amount
+ * @property {number} availableMargin - Account's available margin amount
+ * @property {number} openPL - Account's open profit & loss amount
+ * @property {number} closePL - Account's close profit & loss amount
+ * @property {number} deposits - Account's deposits amount
+ * @property {number} commissions - Account's commissions amount
+ * @property {number} credits - Account's credits amount
+ * @property {number} debits - Account's debits amount
+ * @property {number} cashback - The claimed cashback amount
+ * @property {number} withdrawRequests - Account's withdraw requests amount
+ * @property {number} withdrawPullbacks - Account's withdraw pull-backs amount
+ */
+
+/**
+ * Enum of the Transaction Types.<br/>
+ * @typedef Account.TransactionType
+ * @property {string} None - Unknown
+ * @property {string} Credit - Credit transaction type
+ * @property {string} Debit - Debit transaction type
+ * @property {string} CCVerify - Credit Card Verify transaction type
+ * @property {string} CCDeposit - Credit Card Deposit transaction type
+ * @property {string} BankDeposit - Bank Deposit transaction type
+ * @property {string} GeneralDeposit - General Deposit transaction type
+ * @property {string} CCWithdrawRequest - Credit Card Withdraw Request transaction type
+ * @property {string} BankWithdrawRequest - Bank Withdraw Request transaction type
+ * @property {string} GeneralWithdrawRequest - General Withdraw Request transaction type
+ * @property {string} CCWithdraw - Credit Card Withdraw transaction type
+ * @property {string} CCWithdrawRefund - Credit Card Withdraw Refund transaction type
+ * @property {string} CCWithdrawCancel - Credit Card Withdraw Cancel transaction type
+ * @property {string} BankWithdraw - Bank Withdraw transaction type
+ * @property {string} GeneralWithdraw - General Withdraw transaction type
+ * @property {string} WithdrawCommission - Withdraw Commission transaction type
+ * @property {string} PositionClosureWithProfit - Trading Position Closure with Profit transaction type
+ * @property {string} RollingCommission - Rolling Commission transaction type
+ * @property {string} AutoCreditAtRegistration - Auto Credit At Registration transaction type
+ * @property {string} PositionClosureWithLoss - Position Closure with Loss transaction type
+ * @property {string} eWalletDeposit - eWallet Deposit transaction type
+ * @property {string} WithdrawRequestPullback - Withdraw Request Pullback transaction type
+ * @property {string} ChargeBack - Charge Back transaction type
+ * @property {string} AutoCreditDueToNegativeBalance - Auto Credit Due To Negative Balance transaction type
+ * @property {string} PhoneVerificationBonus - Phone Verification Bonus transaction type
+ * @property {string} MaintenanceCommission - Maintenance Commission transaction type
+ * @property {string} HandlingCommission - Handling Commission transaction type
+ */
+
+/**
+ * An account fund transaction info
+ * @typedef Account.Transaction
+ * @property {string} id - Transaction id
+ * @property {string} date - Transaction date
+ * @property {Account.TransactionType} type - Transaction type
+ * @property {number} credit - Transaction credit amount
+ * @property {number} postBalance - Transaction post balance amount
+ * @property {number} closePL - Transaction close profit & loss amount
+ * @property {number} positionId - Transaction trade position Id
+ * @property {string} symbol - Transaction symbol
+ * @property {string} assetName - Transaction asset name
+ * @property {number} debit - Transaction  debit amount
+ * @property {string} reason - Transaction closing reason
+ * @property {string} reasonDate - Transaction closing reason date
+ * @property {Trading.CloseReason} positionCloseReason - Transaction position closing reason
+ */
+
+//<editor-fold desc="// Bonuses {...}">
+
+/**
+ * Enum of available challenges types.
+ * @typedef Account.ChallengeType
+ * @property {string} ProfitAmount - The challenge is to achieve a certain amount of profit.
+ * @property {string} OpenPosition - The challenge is to open a certain number of positions.
+ * @property {string} ClosePosition - The challenge is to close a certain number of positions.
+ * @property {string} TradedVolume - The challenge is to achieve a certain amount of trading volume.
+ * @property {string} CashbackAmount - The challenge is to achieve a certain amount of cashback.
+ * @property {string} TradeConsecutiveDays - The challenge is to trade for a certain amount fo consecutive days.
+ */
+
+/**
+ * A bonus abstract challenge base object.
+ * @typedef Account.Challenge
+ * @property {Account.ChallengeType} type - The challenge type.
+ * @property {number} requirement - The goal to achieve.
+ * @property {number} achievement - The progress so far.
+ */
+
+/**
+ * Enum of available Bonus types.
+ * @typedef Account.BonusType
+ * @property {string} Pending - Pending bonus.
+ * @property {string} PhoneVerification - Phone verification bonus.
+ * @property {string} Practice - Bonus given to practice user.
+ * @property {string} Cashback - Cashback bonus.
+ */
+
+/**
+ * Enum of available Bonus statuses.
+ * @typedef Account.BonusStatus
+ * @property {string} Unknown - Unknown bonus status.
+ * @property {string} Active - Active bonus status.
+ * @property {string} Released - Finished and payed bonus status.
+ * @property {string} ReleasedPartially - Partially finished and payed bonus status.
+ * @property {string} Expired - Bonus expired status.
+ * @property {string} Cancelled - Bonus canceled status.
+ * @property {string} Achieved - Bonus achieved status.
+ */
+
+/**
+ * An account abstract bonus base object.
+ * @typedef Account.Bonus
+ * @property {string} id - A unique identifier for this bonus.
+ * @property {Account.BonusType} type - Type of bonus.
+ * @property {Account.BonusStatus} status - Status of bonus.
+ * @property {number} amount - Amount that the bonus can credit user.
+ * @property {string} grantDate - Bonus starting date.
+ * @property {string} expirationDate - The bonus expiration date
+ * @property {number} bonusCoefficient - The coefficient that has to be used when calculating the bonus amount
+ * @property {boolean} canExtend - Whether this bonus expiration be extended
+ * @property {Account.Challenge} [challenge] - The requirement to achieve for getting this bonus.
+ */
+
+/**
+ * //TODO Need to add more info for pending bonus
+ * An account bonus given for positions volume to users.<br/>
+ * <strong><em>@extends:</em></strong><br/>
+ * <ul>
+ *     <li>{@link Account.Bonus}</li>
+ * </ul>
+ * @typedef {Account.Bonus} Account.Pending
+ * @property {string} expirationDate - Max date for bonus earning.
+ * @property {number} percentage - Percentage of bonus earned.
+ * @property {number} bonusCap
+ * @property {number} volumePerBonusUnit
+ * @property {number} timeToIncreaseBonus
+ * @property {number} requiredVolume
+ * @property {number} accumulatedDeposits
+ * @property {number} accumulatedVolume
+ * @property {number} numOfOpenedPositions
+ * @augments Account.Bonus
+ */
+
+//</editor-fold> // Bonuses
+
+//</editor-fold> // Model
+
+//<editor-fold desc="// Methods {...}">
+
+/**
+ * Subscribe for account status updates notifications
+ * @function Account.subscribeForAccountStatus
+ * @param {string} token - An authentication token
+ * @param {string} userGUID - The user GUID
+ * @returns {Account.AccountStatusInfo} - Account status info
+ */
+
+/**
+ * Unsubscribe from account status updates notifications
+ * @function Account.unsubscribeForAccountStatus
+ * @param {string} token - An authentication token
+ * @param {string} userGUID - The user GUID
+ */
+
+/**
+ * In case the account equity is low, this will get a list of suggested amounts to deposit in order to recover the account
+ * @function Account.getEquityRecoveryAmounts
+ * @param {string} token - An authentication token
+ * @returns {number[] | null} A list of suggested deposit amount or null in case the account is at no risk
+ */
+
+/**
+ * Gets the Account's summary report
+ * @function Account.getAccountSummary
+ * @param {string} token - An authentication token
+ * @param {string} from - Will retrieve all position that were closed after that time<br />Should be in ISO 8601 format
+ * @param {string} [to=Now] - Optional. Will retrieve all position that were closed up until that time<br />Should be in ISO 8601 format
+ * @returns {Account.AccountSummary} An account's summary report between the requested timestamps
+ */
+
+/**
+ * Gets the positions history for the account (a report of all closed positions)
+ * @function Account.getPositionsHistory
+ * @param {string} token - An authentication token
+ * @param {string} from - Will retrieve all position that were closed after that time<br />Should be in ISO 8601 format
+ * @param {string} [to=Now] - Optional. Will retrieve all position that were closed up until that time<br />Should be in ISO 8601 format
+ * @param {number} [itemsPerPage] - Optional. Used to limit number of items returned for paging scenario
+ * @param {number} [pageIndex] - Optional. Used to point to page number to view (0 is first page)
+ * @returns {Array.<Account.Position>} An array of positions that were closed between the requested timestamps
+ */
+
+/**
+ * Gets the Account's statement report
+ * @function Account.getAccountStatement
+ * @param {string} token - An authentication token
+ * @param {string} from - Will retrieve all position that were closed after that time<br />Should be in ISO 8601 format
+ * @param {string} [to=Now] - Optional. Will retrieve all position that were closed up until that time<br />Should be in ISO 8601 format
+ * @param {number} [itemsPerPage] - Optional. Used to limit number of items returned for paging scenario
+ * @param {number} [pageIndex] - Optional. Used to point to page number to view (0 is first page)
+ * @returns {Array.<Account.Transaction>} An array of account statement transaction between the requested timestamps
+ */
+
+/**
+ * Gets the Orders history for the account
+ * @function Account.getOrdersHistory
+ * @param {string} token - An authentication token
+ * @param {string} from - Will retrieve all orders that were closed after that time<br />Should be in ISO 8601 format
+ * @param {string} [to=Now] - Optional. Will retrieve all orders that were closed up until that time<br />Should be in ISO 8601 format
+ * @param {number} [itemsPerPage] - Optional. Used to limit number of items returned for paging scenario
+ * @param {number} [pageIndex] - Optional. Used to point to page number to view (0 is first page)
+ * @returns {Array.<Account.Order>} An array of orders that were closed between the requested timestamps
+ */
+
+/**
+ * Cashes a bonus to the balance (if possible).
+ * @function Account.claimBonus
+ * @param {string} bonusId - The claimed bonus ID.
+ * @returns {number} The granted bonus amount
+ */
+
+/**
+ * Extends the bonus expiration (if possible).
+ * @function Account.extendBonus
+ * @param {string} bonusId - The extended bonus ID.
+ */
+
+/**
+ * Skips the bonus (if possible).
+ * @function Account.skipBonus
+ * @param {string} bonusId - The skipped bonus ID.
+ */
+
+//</editor-fold> // Methods
+
+//<editor-fold desc="// Errors {...}">
+
+/**
+ * Account Errors
+ * @typedef {object} Account.Errors
+ * @property {Error} BONUS_DOES_NOT_EXIST - The specified bonus was not found
+ * @property {Error} BONUS_CANNOT_BE_CLAIMED - The bonus cannot be claimed as it is not in Achieved status
+ * @property {Error} BONUS_NOT_EXPIRED - The bonus is not expired yet and can't be skipped or extend
+ */
+
+//</editor-fold> // Errors

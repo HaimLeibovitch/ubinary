@@ -1,0 +1,206 @@
+.form-control {
+    width: 200px;
+}
+
+.btn-small {
+    width: 34.5%;
+}
+
+table {
+    margin-top: 30px;
+}
+
+.table-no-margin {
+    margin-top: 0px;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.glyphicon {
+    font-size: 16px;
+}
+
+.copllapse-btn span {
+    background-color: white !important;
+}
+
+
+.categoryCell {
+    font-weight: bold;
+}
+
+.table-header {
+    text-align: center;
+    background-color: #ddd;
+}
+
+ul.tree {
+    list-style: none;
+}
+
+ul.tree > li {
+    margin: 10px;
+}
+
+ul.tree > li > span {
+    cursor: pointer;
+}
+
+.xbutton {
+    float: right;
+    background-color: transparent;
+    border: none;
+}
+
+.xbutton > .glyphicon {
+    font-size: 12px;
+    vertical-align: top;
+}
+
+.test-link {
+    padding: 0px;
+    margin-left: 2em;
+}
+
+.popup {
+    position: absolute;
+    left: 50%;
+    background: #fff;
+    width: 40%;
+    margin-left: -20%;
+    margin-top: 5%;
+    z-index: 200;
+    padding: 15px;
+    border: 1px solid;
+    max-height: 80%;
+    overflow-y: scroll;
+}
+
+test-permission-window {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 20;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background: #999;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: 100;
+    left: 0;
+}
+
+.table-title {
+    font-size: larger;
+    text-align: center;
+}
+
+.response-cell {
+    width: 100%;
+}
+
+.upload-file-status {
+    list-style-type: none;
+    //margin-left: -10%;
+    padding-bottom: 7%;
+}
+
+.upload-file-status li {
+    float: left;
+    padding-left: 2%;
+    width: 12%;
+}
+
+.upload-file-status p {
+    display: inline;
+}
+
+.copllapse-btn {
+    border-color: #439EEC;
+    padding: 0px 4px;
+}
+
+.copllapse-btn span {
+    font-size: 13px;
+    color: #439EEC;
+}
+
+.copllapse-btn span {
+    color: #080808;
+    background-color: #ddd;
+    border-color: #ddd;
+}
+
+#upload-leads-form {
+    margin-bottom: 5%;
+}
+
+.progress {
+    width: 110%;
+    margin-left: -5%;
+}
+
+tr {
+    background-color: white  !important;
+}
+
+.shuldbeOrange {
+    color: orange;
+}
+
+.shuldbeRed {
+    color: red;
+}
+
+.shuldbeGreen {
+    color: green;
+}
+
+.shuldbeGrey {
+    color: grey;
+}
+
+.myProgress {
+    margin-left: 4%;
+}
+
+.minimal-table {
+    margin-top: 0px;
+}
+
+.add_ip_input {
+    float: left;
+}
+.add_ip_btn {
+    font-size: 12px;
+}
+
+.left_side_error {
+    padding-left: 27px;
+}
+
+.left_side_error_icon {
+    right: auto;
+}
+
+.remove-from-list {
+    margin: auto 10px;
+    cursor: pointer
+}
+
+.width50 {
+    width: 50%;
+}

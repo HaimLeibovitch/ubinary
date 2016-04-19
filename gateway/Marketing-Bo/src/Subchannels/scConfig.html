@@ -1,0 +1,91 @@
+<div style="width: 50%" class="center-block">
+	<table class="table table-bordered">
+		<thead>
+		<th class="table-header" colspan="2">Affiliate Config</th>
+		</thead>
+		<tr>
+			<td>Role</td>
+			<td><input type="text" class="form-control" ng-model="sc.config.Role" ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'Role')"></td>
+		</tr>
+		<tr>
+			<td>Whitelist IPs</td>
+			<td>
+				<ul ng-if="sc.config.WhiteIps">
+					<li ng-repeat="ip in sc.config.WhiteIps track by $index">{{ ip }} <span
+							class="glyphicon glyphicon-remove remove-from-list"
+							aria-hidden="true" ng-click="SubchannelsCtrl.removeIP(sc, ip)"></span></li>
+				</ul>
+				<div id="ip_input" class="form-group has-feedback" ng-class="ipErrorClass">
+					<input type="text" class="form-control add_ip_input left_side_error"
+						   ng-model="IPToAdd" ng-change="SubchannelsCtrl.checkIp(IPToAdd)">
+										<span ng-if="ipErrorClass=='has-error'"
+											  class="glyphicon glyphicon-remove form-control-feedback left_side_error_icon"
+											  aria-hidden="true"></span>
+				</div>
+				<button class="xbutton" style="float: inherit;" ng-click="SubchannelsCtrl.addIP(sc, IPToAdd)"><span	class="glyphicon glyphicon-plus add_ip_btn"	style="vertical-align:middle"></span> Add</button>
+			</td>
+		</tr>
+		<tr>
+			<td>TLID</td>
+			<td><input type="text" class="form-control" ng-model="sc.config.Tlid"  ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'Tlid')"></td>
+		</tr>
+		<tr>
+			<td>LoginKey</td>
+			<td><input type="text" class="form-control" ng-model="sc.config.LoginKey"  ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'LoginKey')"></td>
+		</tr>
+		<tr>
+			<td>Eligible To All</td>
+			<td>
+				<label class="radio-inline">
+					<input type="radio" name="inlineRadioOptions" ng-model="sc.config.EligibleToAll" ng-value="true"> Yes
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="inlineRadioOptions" ng-model="sc.config.EligibleToAll" ng-value="false"> No
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<td>Session Expiration Span</td>
+			<td>
+				<div id="time_input" class="form-group has-feedback" ng-class="timeSpanErrorClass">
+					<input type="text" class="form-control add_ip_input left_side_error" ng-model="sc.config.SessionExpirationSpan" placeholder="hh:mm:ss" ng-change="SubchannelsCtrl.checkTimeSpan(sc, sc.config.SessionExpirationSpan);">
+										<span ng-if="timeSpanErrorClass=='has-error'"
+											  class="glyphicon glyphicon-remove form-control-feedback left_side_error_icon"
+											  aria-hidden="true"></span>
+			</td>
+		</tr>
+		<tr>
+			<td>Rate Shift</td>
+			<td><input type="number" class="form-control" ng-model="sc.config.RateShift"  ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'RateShift')"></td>
+		</tr>
+		<tr>
+			<td>Minimum Stake</td>
+			<td><input type="number" class="form-control" ng-model="sc.config.MinStake"  ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'MinStake')"></td>
+		</tr>
+		<tr>
+			<td>Maximum Stake</td>
+			<td><input type="number" class="form-control" ng-model="sc.config.MaxStake" ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'MaxStake')"></td>
+		</tr>
+		<tr>
+			<td>Is Disabled</td>
+			<td>
+				<label class="radio-inline">
+					<input type="radio" name="inlineRadioOptions" ng-model="sc.config.IsDisabled" ng-value="1" ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'IsDisabled')"> Yes
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="inlineRadioOptions" ng-model="sc.config.IsDisabled" ng-value="0" ng-change="SubchannelsCtrl.checkIfConfigNeedsSave(sc,'IsDisabled')"> No
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<td>Blocked Countries</td>
+			<td>
+				<div ng-dropdown-multiselect options="SubchannelsCtrl.countries" selected-model="sc.blockedCountries" extra-settings="SubchannelsCtrl.extraPropforCountries" events="SubchannelsCtrl.eventsForCountriesSelector"></div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><button class="btn btn-default" ng-click="SubchannelsCtrl.saveConfig(sc)" ng-disabled="sc.savedConfig.isSaveNeeded.length == 0"><span
+					class="glyphicon glyphicon-floppy-disk" style="vertical-align:middle"></span> Save Changes</button> </td>
+		</tr>
+	</table>
+</div>

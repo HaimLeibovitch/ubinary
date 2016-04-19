@@ -1,0 +1,74 @@
+<div ng-repeat="file in fileArr track by $index">
+    <ul class="upload-file-status">
+        <li>
+            <button type="button" class="btn btn-default copllapse-btn" aria-label="Center Align" data-toggle="collapse"
+                    data-parent="#accordion" href="#collapse{{::LeadUploadCtrl.collapseItemsNum}}"
+                    ng-click="checkIfVisible($event, $index)">
+                <span ng-class="{'glyphicon glyphicon-plus': fileArr.length > 1, 'glyphicon glyphicon-minus': fileArr.length == 1}" id="span{{::LeadUploadCtrl.collapseItemsNum}}" aria-hidden="true"
+                      style="font-size: 13px;color: #439EEC;">
+                </span>
+            </button>
+            <p>{{file[LeadUploadCtrl.index].progressData.fileName}}</p>
+        </li>
+        <li>
+            <p>
+                {{file[LeadUploadCtrl.index].progressData.leadSuccessStatus + file[LeadUploadCtrl.index].progressData.leadSuccessFail}} out of
+                {{file[LeadUploadCtrl.index].progressData.leadCount}} processed
+            </p>
+
+            <div class="progress">
+                <div class="progress-bar" ng-style="{'width': file[LeadUploadCtrl.index].progressData.progressBarWidth}"></div>
+            </div>
+        </li>
+        <li><p>successfull leads: {{file[LeadUploadCtrl.index].progressData.leadSuccessStatus}}</p></li>
+        <li><p>Error Leads: {{file[LeadUploadCtrl.index].progressData.leadSuccessFail}}</p></li>
+        <li>
+            <p>Partner: {{file[LeadUploadCtrl.index].progressData.partner}}</p>
+        </li>
+        <li>
+            <p>
+                <button type="button" class="btn btn-primary btn-md k" type="submit"
+                        ng-click="exportData(file[0])"
+                        style="color: #080808; background-color: #ddd;border-color: #ddd;">Export to Excel!
+                </button>
+            </p>
+        </li>
+        <li class="myProgress">
+            <p ng-class="{shuldbeGrey: file[LeadUploadCtrl.index].progressData['statusStyle'].grey == true ,shuldbeOrange: file[LeadUploadCtrl.index].progressData['statusStyle'].orange == true, shuldbeGreen: file[LeadUploadCtrl.index].progressData['statusStyle'].green == true, shuldbeRed: file[LeadUploadCtrl.index].progressData['statusStyle'].red == true}">
+                {{file[LeadUploadCtrl.index].progressData.status}}</p></li>
+        <li ng-if="file[LeadUploadCtrl.index].progressData['statusStyle'].orange == true || file[LeadUploadCtrl.index].progressData['statusStyle'].red == true" ng-click="abortFile(file, $index)">
+            <button type="button" class="btn btn-default" aria-label="Justify" data-toggle="modal" data-target="#myModal"><span aria-hidden="true">Abort</span></button>
+        </li>
+    </ul>
+
+
+    <div ng-class="{'panel-collapse collapse in': fileArr.length == 1, 'panel-collapse collapse collapse': fileArr.length > 1}" id="collapse{{::LeadUploadCtrl.collapseItemsNum}}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>user ID</td>
+                <td>Email</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Status</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="lead in file[0] track by $index">
+                <td>{{lead.userId}}</td>
+                <td>{{lead.Email}}</td>
+                <td>{{lead.FirstName}}</td>
+                <td>{{lead.LastName}}</td>
+                <td>{{lead.status}}</td>
+                <td>
+                    <span ng-if="lead.status=='RC_OK'" class="glyphicon glyphicon-ok success" aria-hidden="true"></span>
+                    <span ng-if="lead.status!='RC_OK'" class="glyphicon glyphicon-remove error"
+                          aria-hidden="true"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
